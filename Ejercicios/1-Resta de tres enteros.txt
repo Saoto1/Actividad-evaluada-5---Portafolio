@@ -1,0 +1,65 @@
+section .data
+
+    msg_inicio db 'Resta de 3 números enteros', 0xA  
+    len_inicio equ $ - msg_inicio 
+    msg_operacion db 'Se restaran los valores de 10 y 5 y 3', 0xA
+    len_operacion equ $ - msg_operacion
+    
+
+    msg_resultado db 'El resultado es: ', 0xA 
+    len_resultado equ $ - msg_resultado
+    
+
+    num1 dw 10 
+    num2 dw 5 
+    num3 dw 3 
+    resultado dw 0 
+
+section .text
+    global _start
+
+_start:
+   
+    mov eax, 4        
+    mov ebx, 1      
+    mov ecx, msg_inicio   
+    mov edx, len_inicio     
+    int 0x80         
+
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg_operacion
+    mov edx, len_operacion
+    int 0x80
+    
+
+    mov ax, [num1] 
+    sub ax, [num2] 
+    mov [resultado], ax 
+    
+ 
+    mov ax, [resultado] 
+    sub ax, [num3] 
+    mov [resultado], ax 
+
+    mov ax, [resultado] 
+    add ax, 48 
+    mov [resultado], ax 
+    
+
+    mov eax, 4 
+    mov ebx, 1 
+    mov ecx, msg_resultado 
+    mov edx, len_resultado 
+    int 0x80
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, resultado 
+    mov edx, 6 
+    int 0x80
+
+
+    mov eax, 1        
+    xor ebx, ebx      
+    int 0x80          

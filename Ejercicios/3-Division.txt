@@ -1,0 +1,50 @@
+section .data
+    mensaje_inicio db 'División de 2 números enteros', 0xA
+    long_inicio equ $ - mensaje_inicio
+    mensaje_operacion db 'Se dividiran los valores de 6 / 2', 0xA
+    long_operacion equ $ - mensaje_operacion
+    mensaje_resultado db 'El resultado es: ', 0xA
+    long_resultado equ $ - mensaje_resultado
+    valor1 dd 6
+    valor2 dd 2
+    
+section .bss
+    resultado resd 1
+
+section .text
+    global _start
+
+_start:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, mensaje_inicio
+    mov edx, long_inicio
+    int 0x80
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, mensaje_operacion
+    mov edx, long_operacion
+    int 0x80
+
+    mov eax, [valor1]
+    mov ebx, [valor2]
+    xor edx, edx
+    div ebx
+    add eax, 48
+    mov [resultado], eax
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, mensaje_resultado
+    mov edx, long_resultado
+    int 0x80
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, resultado
+    mov edx, 6
+    int 0x80
+
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80

@@ -1,0 +1,49 @@
+section .data
+    texto_inicio db 'Multiplicación de 2 números enteros', 0xA
+    longitud_inicio equ $ - texto_inicio
+    texto_operacion db 'Se multiplicaran los valores de 2 y 3', 0xA
+    longitud_operacion equ $ - texto_operacion
+    texto_resultado db 'El resultado es: ', 0xA
+    longitud_resultado equ $ - texto_resultado
+    primer_numero db 2
+    segundo_numero db 3
+    
+section .bss
+    resultado resw 1
+
+section .text
+    global _start
+
+_start:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, texto_inicio
+    mov edx, longitud_inicio
+    int 0x80
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, texto_operacion
+    mov edx, longitud_operacion
+    int 0x80
+
+    mov al, [primer_numero]
+    mov bl, [segundo_numero]
+    mul bl
+    add al, 48
+    mov [resultado], al
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, texto_resultado
+    mov edx, longitud_resultado
+    int 0x80
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, resultado
+    mov edx, 6
+    int 0x80
+
+    mov eax, 1
+    xor ebx, ebx
+    int 0x80
